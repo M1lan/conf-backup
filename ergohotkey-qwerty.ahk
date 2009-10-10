@@ -20,7 +20,7 @@
 ;; Global ergonomic editing command shortcuts for 
 ;; use with autohotkey <http://www.autohotkey.com/>
 ;; shortcut layout taken from ErgoEmacs
-;; <http://code.google.com/p/ergoemacs/>
+;; <http://code.google.com/p/ergoemacs/>  eue ue
 ;; Further details:
 ;; <http://xahlee.org/emacs/ergonomic_emacs_keybinding.html/>
 ;; Version 0.2 for us-dvorak layout,
