@@ -71,7 +71,7 @@
   SendInput {End}
   return
 
-;; delete char forwards/backwards (no yank needed)
+;; delete char fu forwards/backwards (no yank needed)
 !u::
   SendInput {Delete} 
   return
