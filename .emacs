@@ -7,15 +7,15 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
-  '(auto-raise-tool-bar-buttons t t)
-  '(auto-resize-tool-bars t t)
-  '(calendar-week-start-day 1)
-  '(case-fold-search t)
-  '(current-language-environment "Latin-1")
-  '(default-input-method "latin-1-prefix")
-  '(gnus-nntp-server "82.197.221.30")
-  '(mail-archive-file-name "~/mailarchive")
-  ;;this is needed to make the C-x m mailing buffer send the mail with C-c C-c
+ '(auto-raise-tool-bar-buttons t t)
+ '(auto-resize-tool-bars t t)
+ '(calendar-week-start-day 1)
+ '(case-fold-search t)
+ '(current-language-environment "Latin-1")
+ '(default-input-method "latin-1-prefix")
+ '(explicit-shell-file-name "C:\\msysgit\\msys.bat")
+ '(gnus-nntp-server "82.197.221.30")
+ '(mail-archive-file-name "~/mailarchive")
  '(mail-setup-hook (quote (message-mode)))
  '(make-backup-files nil)
  '(normal-erase-is-backspace t)
@@ -60,8 +60,7 @@
  '(org-use-fast-todo-selection t)
  '(org-use-tag-inheritance nil)
  '(tabbar-mode t)
- '(vc-path (quote ("c:\\msysgit\\bin\\")))
- )
+ '(vc-path (quote ("c:\\msysgit\\bin\\"))))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
@@ -75,8 +74,7 @@
  '(tabbar-button-face ((t (:inherit tabbar-default-face :foreground "dark red"))))
  '(tabbar-default-face ((t (:inherit variable-pitch :background "black" :foreground "gray60" :height 0.8))))
  '(tabbar-selected-face ((t (:inherit tabbar-default-face :foreground "blue"))))
- '(tabbar-unselected-face ((t (:inherit tabbar-default-face))))
- )
+ '(tabbar-unselected-face ((t (:inherit tabbar-default-face)))))
 
 ;;=======================================================================================
 ;; My customizations
@@ -164,3 +162,18 @@
 (global-set-key (kbd "C-d") 'dired)
 (global-set-key (kbd "M-[") 'switch-to-next-frame)
 
+;; msys-git in a shell
+(defun msysgit-shell (&optional arg)
+  "Run MSYS-GIT shell (msys.bat).  It's like a Unix Shell in Windows, but with git included.
+A numeric prefix arg switches to the specified session, creating
+it if necessary."
+  (interactive "P")
+  (let ((buf-name (cond ((numberp arg)
+			 (format "*msysgit<%d>*" arg))
+			(arg
+			 (generate-new-buffer-name "*msysgit*"))
+			(t
+			 "*msysgit*")))
+	(explicit-shell-file-name "C:\\msysgit\\msys.bat")
+)
+    (shell buf-name)))
