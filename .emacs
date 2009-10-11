@@ -1,19 +1,21 @@
 ;; Emacs just rocks the house.
 ;; This is my personal .emacs file, nothing special yet but quite useful already
+;; custom-set stuff is added automatically by M-x customize, personal customizations are below
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(auto-raise-tool-bar-buttons t t)
- '(auto-resize-tool-bars t t)
- '(calendar-week-start-day 1)
- '(case-fold-search t)
- '(current-language-environment "Latin-1")
- '(default-input-method "latin-1-prefix")
- '(gnus-nntp-server "82.197.221.30")
- '(mail-archive-file-name "~/mailarchive")
+  '(auto-raise-tool-bar-buttons t t)
+  '(auto-resize-tool-bars t t)
+  '(calendar-week-start-day 1)
+  '(case-fold-search t)
+  '(current-language-environment "Latin-1")
+  '(default-input-method "latin-1-prefix")
+  '(gnus-nntp-server "82.197.221.30")
+  '(mail-archive-file-name "~/mailarchive")
+  ;;this is needed to make the C-x m mailing buffer send the mail with C-c C-c
  '(mail-setup-hook (quote (message-mode)))
  '(make-backup-files nil)
  '(normal-erase-is-backspace t)
@@ -57,7 +59,9 @@
  '(org-time-stamp-rounding-minutes 5)
  '(org-use-fast-todo-selection t)
  '(org-use-tag-inheritance nil)
- '(tabbar-mode t))
+ '(tabbar-mode t)
+ '(vc-path (quote ("c:\\msysgit\\bin\\")))
+ )
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
@@ -71,10 +75,16 @@
  '(tabbar-button-face ((t (:inherit tabbar-default-face :foreground "dark red"))))
  '(tabbar-default-face ((t (:inherit variable-pitch :background "black" :foreground "gray60" :height 0.8))))
  '(tabbar-selected-face ((t (:inherit tabbar-default-face :foreground "blue"))))
- '(tabbar-unselected-face ((t (:inherit tabbar-default-face)))))
+ '(tabbar-unselected-face ((t (:inherit tabbar-default-face))))
+ )
 
-;; mozrepl stuff
-(add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
+;;=======================================================================================
+;; My customizations
+;;=======================================================================================
+
+
+;; mozrepl stuff: see http://hyperstruct.net/projects/mozrepl/emacs-integration
+(add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
 (autoload 'inferior-moz-mode "moz" "MozRepl Inferior Mode" t)
 (autoload 'moz-minor-mode "moz" "MozRepl Minor Mode" t)
 (add-hook 'espresso-mode-hook 'espresso-custom-setup)
@@ -88,77 +98,69 @@
 (auto-install-update-emacswiki-package-name t)
 
 ;; org-mode customization: GTD system 
+;; thankfully adopted from   http://members.optusnet.com.au/~charles57/GTD/
 (global-set-key (kbd "M-7") 'gtd)
 (defun gtd ()
    (interactive)
-   (find-file "~/mygtd.org")
+   (find-file "~/gtd/newgtd.org")
  )
-
 (setq org-log-done nil)
 (setq org-agenda-include-diary nil)
 (setq org-deadline-warning-days 7)
 (setq org-timeline-show-empty-dates t)
 (setq org-insert-mode-line-in-empty-file t)
-
 (setq org-remember-templates
-     '(
-      ("Todo" ?t "* TODO %^{Brief Description} %^g\n%?\nAdded: %U" "~/gtd/newgtd.org" "Tasks")
+      '(("Todo" ?t "* TODO %^{Brief Description} %^g\n%?\nAdded: %U" "~/gtd/newgtd.org" "Tasks")
       ("Private" ?p "\n* %^{topic} %T \n%i%?\n" "~/gtd/privnotes.org")
-      ("WordofDay" ?w "\n* %^{topic} \n%i%?\n" "~/gtd/wotd.org")
-      ))
-
+      ("WordofDay" ?w "\n* %^{topic} \n%i%?\n" "~/gtd/wotd.org")))
 (setq org-agenda-exporter-settings
       '((ps-number-of-columns 1)
         (ps-landscape-mode t)
         (htmlize-output-type 'css)))
-
 (setq org-agenda-custom-commands
-      '(
-	
-	("P" "Projects"   
+      '(("P" "Projects"   
 	 ((tags "PROJECT")))
-
 	("H" "Office and Home Lists"
 	 ((agenda)
           (tags-todo "UNI")
           (tags-todo "HOME")
-          (tags-todo "COMPUTER")
+          (tags-todo "PC")
           (tags-todo "MISC")
           (tags-todo "READING")))
-
 	("D" "Daily Action List"
-	 (
-          (agenda "" ((org-agenda-ndays 1)
-                      (org-agenda-sorting-strategy
-                       (quote ((agenda time-up priority-down tag-up) )))
-                      (org-deadline-warning-days 0)
-                      ))))
-	)
-      )
+	 ((agenda "" ((org-agenda-ndays 1)
+(org-agenda-sorting-strategy
+(quote ((agenda time-up priority-down tag-up) )))
+(org-deadline-warning-days 0)))))))
 (add-hook 'org-agenda-mode-hook 'hl-line-mode)
 
-
-; make whitespace-mode use just basic coloring
+;; make whitespace-mode use just basic coloring
+;; Thanks to http://xahlee.org/emacs/whitespace-mode.html
 (setq whitespace-style (quote
   ( spaces tabs newline space-mark tab-mark newline-mark)))
 
+;; Email stuff -> http://www.emacswiki.org/cgi-bin/wiki/GnusMSMTP
 ;; with Emacs 23.1, you have to set this explicitly (in MS Windows)
 ;; otherwise it tries to send through OS associated mail client
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
-;; we substitute sendmail with msmtp
+;; we substitute sendmail with msmtp see http://msmtp.sourceforge.net/
 (setq sendmail-program "c:/msmtp-1.4.18-w32/msmtp.exe")
-;;need to tell msmtp which account we're using
+;; need to tell msmtp which account we're using
 (setq message-sendmail-extra-arguments '("-a" "milan"))
-
-;; setup gnus for gmail access, not storing passwords here..
+;; setup for gmail access, not storing passwords here..
 (setq mail-host-address "gmail.com")
 (setq user-full-name "Milan Santosi")
 (setq user-mail-address "milan.santosi@gmail.com")
 (setq starttls-use-gnutls t)
 
-;; misc stuff
+;; tabbar-extension.el from emacswiki
 (require 'tabbar-extension)
+(tabbar-mode 1)
+
+;; I dont like the ugly toolbar.
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(global-set-key (kbd "C-d") 'dired-other-window)
+
+;; a few bindings I use quite often
+(global-set-key (kbd "C-d") 'dired)
 (global-set-key (kbd "M-[") 'switch-to-next-frame)
 
