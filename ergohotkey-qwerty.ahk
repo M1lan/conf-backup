@@ -20,11 +20,11 @@
 ;; Global ergonomic editing command shortcuts for 
 ;; use with autohotkey <http://www.autohotkey.com/>
 ;; shortcut layout taken from ErgoEmacs
-;; <http://code.google.com/p/ergoemacs/>  eue ue
+;; <http://code.google.com/p/ergoemacs/>
 ;; Further details:
 ;; <http://xahlee.org/emacs/ergonomic_emacs_keybinding.html/>
-;; Version 0.2 for us-dvorak layout,
-;; created and tested on Windows 7 evaluation build 7100
+;; Version 0.1 for us-qwerty layout,
+;; created on Windows 7 evaluation build 7100
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Changelog:
 ;; Version 0.2: 
@@ -38,49 +38,49 @@
 #IfWinNotActive ahk_class Emacs
 
 ;; navigation keys should be on the homerow
-!c::
+!i:
   SendInput {Up}
   return
-!h::
+!j::
   SendInput {Left}
   return
-!t::
+!k::
   SendInput {Down}
   return
-!n::
+!l::
   SendInput {Right}
   return
 
 ;; move by word
-!g::
+!u::
   SendInput {Ctrl down}
   SendInput {Left}
   SendInput {Ctrl up}
   return
-!r::
+!o::
   SendInput {Ctrl down}
   SendInput {Right}
   SendInput {Ctrl up}
   return
 
 ;; move to home/end
-!d::
+!h::
   SendInput {Home}
   return
-+!d::
++!h::
   SendInput {End}
   return
 
-;; delete char fu forwards/backwards  noch mal (no yank needed)
-!u::
+;; delete char forwards/backwards (no yank needed)
+!f::
   SendInput {Delete} 
   return
-!e::
+!d::
   SendInput {Backspace}
   return
 
 ;; kill rest of line forwards
-!i::				  
+!g::				  
   SendInput {Shift down}
   SendInput {End}
   SendInput {Shift up}
@@ -90,7 +90,7 @@
   return
 
 ;; kill line backwards (shift-home key combo mapped to a !+-key causes trouble)
-!x::
+!b::
   SendInput {Shift down}
   SendInput {Home}
   SendInput {Shift up}
@@ -100,7 +100,7 @@
   return 
 
 ;; kill word backwards
-!.::
+!e::
   SendInput {Ctrl down}
   SendInput {Shift down}
   SendInput {Left}
@@ -112,7 +112,7 @@
   return
 
 ;; delete word forwards
-!p::
+!r::
   SendInput {Ctrl down}
   SendInput {Shift down}
   SendInput {Right}
@@ -124,29 +124,29 @@
   return
 
 ;; cut copy paste
-!q::
+!x::
   SendInput {Ctrl down}
   SendInput {x}
   SendInput {Ctrl up}
   return
-!j::
+!c::
   SendInput {Ctrl down}
   SendInput {c}
   SendInput {Ctrl up}
   return
-!k::
+!v::
   SendInput {Ctrl down}
   SendInput {v}
   SendInput {Ctrl up}
   return
 
 ;; undo/redo
-!`;::
+!`z::
   SendInput {Ctrl down}
   SendInput {z}
   SendInput {Ctrl up}
   return
-+!`;::
++!z;::
   SendInput {Ctrl down}
   SendInput {y}
   SendInput {Ctrl up}
@@ -157,7 +157,7 @@
 ;;Not quite ergo-emacs but still useful to have globally:
 
 ;; put parens around a word
-!b::
+!n::
   SendInput {Ctrl down}
   SendInput {Left}
   SendInput {Ctrl up}
@@ -169,7 +169,7 @@
   return
 
 ;; deletes first and last char of a word (removing parens)
-!+b::
+!+n::
   SendInput {Ctrl down}
   SendInput {Left}
   SendInput {Ctrl up}
@@ -181,7 +181,7 @@
   return
 
 ;; copy rest of line (broken because of '!+' again)
-; !+i::				  
+; !+g::				  
 ;   SendInput {Shift down}
 ;   SendInput {End}
 ;   SendInput {Shift up}
