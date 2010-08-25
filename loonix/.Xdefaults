@@ -1,6 +1,6 @@
 ! {{{ URxvt
 URxvt*termName: rxvt-unicode
-URxvt*imLocale: en_GB.UTF-8
+URxvt*imLocale: en_US.utf8
 URxvt*loginShell: true
 URxvt*saveLines: 32767
 URxvt*scrollBar: false
@@ -19,7 +19,7 @@ URxvt*tintColor: #555555
 URxvt*dynamicColors: on
 URxvt*visualBell: true
 URxvt*urgentOnBell: true
-URxvt*cutchars: "()*,<>[]{}|'
+URxvt*cutchars: "()*,<>[]{}|'        "
 URxvt*perl-lib: /usr/lib/urxvt/perl/
 URxvt*perl-ext-common: default,matcher,searchable-scrollback
 URxvt*urlLauncher: /usr/bin/firefox
@@ -27,42 +27,71 @@ URxvt*matcher.button: 1
 URxvt*matcher.pattern.1: \\bwww\\.[\\w-]+\\.[\\w./?&@#-]*[\\w/-]
 URxvt*keysym.C-u: perl:matcher
 ! }}}
- 
+
+conkeror.Background: black
+conkeror.Foreground: white
+
+
+================
+Emacs
+================
+Emacs.toolBar: False
+Emacs.Foreground: cornsilk
+Emacs.Background: black
+Emacs.menu.attributeForeground: cornsilk
+Emacs.menu.attributeBackground: black
+!Emacs.cursorColor: Darkgrey
+! modeline
+Emacs.mode-line.attributeForeground: white
+Emacs.mode-line.attributeBackground: darkolivegreen
+Emacs.modeline.attributeForeground: white
+Emacs.modeline.attributeBackground: darkolivegreen
+! selection
+Emacs.region.attributeBackground: lightblue
+Emacs.region.attributeForeground: darkslategrey
+Emacs.primary-selection.attributeBackground: blue
+Emacs.secondary-selection.attributeBackground: darkslateblue
+Emacs.show-paren-match-face.attributeBackground: Aquamarine
+Emacs.show-paren-match-face.attributeForeground: SlateBlue
+Emacs.show-paren-mismatch-face.attributeBackground: Red
+Emacs.show-paren-mismatch-face.attributeForeground: White
+Emacs.title: emacs 
+
+
 ! {{{ Fonts
-URxvt*font: -*-terminus-medium-r-*-*-20-120-*-*-*-*-*-*
-URxvt*boldFont: -*-terminus-medium-r-*-*-20-120-*-*-*-*-*-*
-URxvt*italicFont: -*-terminus-medium-r-*-*-20-120-*-*-*-*-*-*
-URxvt*boldItalicFont: -*-terminus-medium-r-*-*-20-120-*-*-*-*-*-*
+URxvt.font:             xft:Terminus:pixelsize=14:antialias=false
+URxvt.boldFont:         xft:Terminus:bold:pixelsize=14:antialias=false
 ! }}}
 
-! {{{ Colours
-URxvt*background: #1c1c1c
-URxvt*foreground: #dcdccc
-!black
-URxvt*color0: #1e1e1e
-URxvt*color8: #505050
-!red
-URxvt*color1: #b04020
-URxvt*color9: #dd4010
-!green
-URxvt*color2: #afd700
-URxvt*color10: #daff30
-!yellow
-URxvt*color3: #f7cf0a
-URxvt*color11: #fce70d
-!blue
-URxvt*color4: #3060aa
-URxvt*color12: #6099dd
-!magenta
-URxvt*color5: #d6156c
-URxvt*color13: #fe4365
-!cyan
-URxvt*color6: #a0c2de
-URxvt*color14: #c9dee8
-!white
-URxvt*color7: #B0B0B0
-URxvt*color15: #ffffff
-! }}}
+
+ !! {{{ Colours
+ URxvt*background: #1c1c1c
+ URxvt*foreground: #dcdccc
+ !!black
+ !URxvt*color0: #1e1e1e
+ !URxvt*color8: #505050
+ !!red
+ !URxvt*color1: #b04020
+ !URxvt*color9: #dd4010
+ !!green
+ !URxvt*color2: #afd700
+ !URxvt*color10: #daff30
+ !!yellow
+ !URxvt*color3: #f7cf0a
+ !URxvt*color11: #fce70d
+ !!blue
+ !URxvt*color4: #3060aa
+ !URxvt*color12: #6099dd
+ !!magenta
+ !URxvt*color5: #d6156c
+ !URxvt*color13: #fe4365
+ !!cyan
+ !URxvt*color6: #a0c2de
+ !URxvt*color14: #c9dee8
+ !!white
+ !URxvt*color7: #B0B0B0
+ !URxvt*color15: #ffffff
+ !! }}}
 
 ! {{{ xmessage
 Xmessage*font: -xos4-terminus-*-*-*-*-*-*-*-*-*-*-iso8859-2
@@ -80,8 +109,8 @@ Xmessage*Scrollbar.borderWidth: 0
 ! {{{ xpdf
 xpdf*enableFreetype: yes
 xpdf*antialias: yes
-xpdf*foreground: black
-xpdf*background: white
+xpdf*foreground: white
+xpdf*background: black
 xpdf*urlCommand: /usr/bin/firefox %s
 xpdf*viKeys: on
 ! }}}

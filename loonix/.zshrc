@@ -221,7 +221,7 @@ fi
 # MY STUFF
 #############################################################################
 # My path (hopefully)
-export PATH=$HOME/HaskellBin/bin:$HOME/.cabal/bin:$PATH
+export PATH=/usr/local/games/ghost++:$HOME/.cabal/bin:$PATH
 # My own functions
 # "apply ls /tmp /usr" runs "ls /tmp" then "ls /usr"
 function apply ()
@@ -231,6 +231,12 @@ function apply ()
   for x in $*; do $cmd $x; done
 }
 
+#gentoo stuff
+alias emergemon='tail -f /var/tmp/portage'
+alias sy='sudo emerge --sync'
+alias syu='sudo emerge -pv --update --deep --newuse world'
+alias syup='sudo emerge --quiet --update --deep --newuse world'
+alias nubhost='sudo tuncfg && hamachi start && ghost++'
 # Build and install a cabal package locally
 function haskell-build ()
 {
@@ -245,6 +251,14 @@ function haskell-build ()
 #some aliases for building haskell source as user or not
 alias hinstu='runhaskell Setup configure --prefix=$HOME --user && runhaskell Setup build && runhaskell Setup install'
 alias hinst='runhaskell Setup configure && runhaskell Setup build && sudo runhaskell Setup install'
+
+#some aliases for hosting and playing dota
+# -- now moved to /usr/local/bin/ghost
+#alias dota='xmodmap ~/.Xmodmap.dota && ~/mysrc/wine-war3/wine /usr/local/games/Warcraft\ III/Frozen\ Throne.exe -opengl'
+alias ghost++='cd /usr/local/games/ghost++ && if pgrep ghost++; then screen -x ghost++; else screen -S ghost++ ghost++; fi && cd ~'
+
+#the standard irssi-in-screen thing
+alias irssi='if pgrep irssi;then screen -x irssi;else screen -S irssi irssi;fi'
 
 
 #############################################################################
@@ -4430,6 +4444,12 @@ gethgsnap() {
 # $GRMLSMALL_SPECIFIC to 0 in your .zshrc.pre file (which this configuration
 # sources if it is there).
 
+
+#whatever.
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ '
+unsetopt prompt_cr
+
+
 if (( GRMLSMALL_SPECIFIC > 0 )) && isgrmlsmall ; then
 
     unset abk[V]
@@ -4463,3 +4483,5 @@ zrclocal
 # Local variables:
 # mode: sh
 # End:
+
+
