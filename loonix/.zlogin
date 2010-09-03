@@ -15,6 +15,10 @@
 ################################################################################
 
 
+/usr/bin/keychain id_rsa
+[[ -f ~/.keychain/yavin4-sh ]] && source ~/.keychain/yavin4-sh
+
+
 ## CURSOR MOVEMENT
 
 # Single char
