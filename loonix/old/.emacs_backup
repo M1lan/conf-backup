@@ -1,0 +1,597 @@
+;; -*- coding-system: utf-8 mode: emacs-lisp
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 122 :width normal :foundry "adobe" :family "courier"))))
+ '(completions-common-part ((t (:inherit default :foreground "red"))))
+ '(cperl-array-face ((t (:background "black" :foreground "dark orange" :weight bold))))
+ '(cperl-hash-face ((t (:background "black" :foreground "indianred" :slant italic :weight bold))))
+ '(pp^L-highlight ((((type x w32 mac graphic) (class color)) (:underline "maroon"))))
+ '(show-paren-match ((((class color) (background light)) (:background "azure2")))))
+
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(cua-mode t nil (cua-base))
+ '(erc-current-nick-highlight-type (quote nick-or-keyword))
+ '(erc-keyword-highlight-type (quote all))
+ '(focus-follows-mouse t)
+ '(ido-enable-flex-matching t)
+ '(inhibit-startup-screen t)
+ '(jde-jdk-registry (quote (("1.6" . "$JAVA_HOME"))))
+ '(mail-user-agent (quote message-user-agent))
+ '(mouse-autoselect-window t)
+ '(mouse-avoidance-mode (quote banish) nil (avoid))
+ '(mouse-drag-copy-region t)
+ '(org-export-latex-packages-alist (quote (("" "setspace" nil))))
+ '(org-file-apps (quote ((auto-mode . emacs) ("\\.mm\\'" . default) ("\\.x?html?\\'" . default) ("\\.pdf\\'" . emacs))))
+ '(show-paren-mode t)
+ '(show-paren-style (quote mixed))
+ '(smtpmail-smtp-server "smtp.gmail.com")
+ '(tooltip-mode nil)
+ '(tramp-default-host "yavin4"))
+
+(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "dv") ; US Dvorak layout for ErgoEmacs
+(load-file "~/.emacs.d/ergoemacs_1_7_1/site-lisp/site-start.el")
+
+
+
+
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))
+
+
+;; ;;=======================================================================================
+;; ;; My customizations
+;; ;;=======================================================================================
+
+;; mozrepl stuff: see http://hyperstruct.net/projects/mozrepl/emacs-integration
+(add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
+(autoload 'inferior-moz-mode "moz" "MozRepl Inferior Mode" t)
+(autoload 'moz-minor-mode "moz" "MozRepl Minor Mode" t)
+(add-hook 'espresso-mode-hook 'espresso-custom-setup)
+(add-hook 'javascript-mode-hook 'javascript-moz-setup)
+(defun javascript-moz-setup () (moz-minor-mode 1))
+(defun espresso-custom-setup ()(moz-minor-mode 1))
+
+;; auto-install from emacswiki
+(add-to-list 'load-path "/home/milan/.emacs.d/elisp/")
+(require 'auto-install)
+(setq auto-install-directory "~/.emacs.d/auto-install/")
+;;(auto-install-update-emacswiki-package-name t)
+(add-to-list 'load-path "~/.emacs.d/auto-install/")
+
+;; org-mode customization: GTD system 
+;; thankfully adopted from   http://members.optusnet.com.au/~charles57/GTD/
+(global-set-key (kbd "M-7") 'gtd)
+(defun gtd ()
+  (interactive)
+  (find-file "~/Dropbox/gtd/newgtd.org")
+)
+(setq org-log-done nil)
+(setq org-agenda-include-diary nil)
+(setq org-deadline-warning-days 7)
+(setq org-timeline-show-empty-dates t)
+(setq org-insert-mode-line-in-empty-file t)
+(setq org-remember-templates
+      '(("Todo" ?t "* TODO %^{Brief Description} %^g\n%?\nAdded: %U" "~/Dropbox/gtd/newgtd.org" "Tasks")
+      ("Private" ?p "\n* %^{topic} %T \n%i%?\n" "~/Dropbox/gtd/privnotes.org")
+      ("WordofDay" ?w "\n* %^{topic} \n%i%?\n" "~/Dropbox/gtd/wotd.org")))
+(setq org-agenda-exporter-settings
+      '((ps-number-of-columns 1)
+	(ps-landscape-mode t)
+	(htmlize-output-type 'css)))
+(setq org-agenda-custom-commands
+      '(("P" "Projects"	  
+	 ((tags "PROJECT")))
+	("H" "Office and Home Lists"
+	 ((agenda)
+	  (tags-todo "UNI")
+	  (tags-todo "HOME")
+	  (tags-todo "PC")
+	  (tags-todo "MISC")
+	  (tags-todo "READING")))
+	("D" "Daily Action List"
+	 ((agenda "" ((org-agenda-ndays 1)
+(org-agenda-sorting-strategy
+(quote ((agenda time-up priority-down tag-up) )))
+(org-deadline-warning-days 0)))))))
+(add-hook 'org-agenda-mode-hook 'hl-line-mode)
+
+;; org-remember mode setup
+(org-remember-insinuate)
+   (setq org-directory "~/Dropbox/gtd/")
+   (setq org-default-notes-file (concat org-directory "/newgtd.org"))
+   (define-key global-map "\C-cr" 'org-remember)
+
+;; Always end a file with a newline
+(setq require-final-newline t)
+;; Stop at the end of the file, not just add lines
+(setq next-line-add-newlines nil)
+
+;; make whitespace-mode use just basic coloring
+;; Thanks to http://xahlee.org/emacs/whitespace-mode.html
+(setq whitespace-style (quote
+  ( spaces tabs newline space-mark tab-mark newline-mark)))
+
+;; tabbar-extension.el from emacswiki
+;;(require 'tabbar-extension)
+;;(tabbar-mode 1)
+
+;; ;;(load "bzr-mode")
+
+;; I dont like the ugly gui elements: the toolbar is buttugly and
+;; useless, the menubar makes you wanna grab the mouse and search for
+;; whatever you hope to find there (in vain) instead of using internal
+;; apropos / help / customize / describe features... scrollbar also
+;; makes you wanna grab the mouse and takes up screen estate for each
+;; split window
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
+;; (setq backup-directory-alist
+;;       `((".*" . ,temporary-file-directory)))
+;; (setq auto-save-file-name-transforms
+;;       `((".*" ,temporary-file-directory t)))
+
+;; (setq org-startup-truncated t)
+
+;; ;; window layout undo and redo
+(winner-mode)
+
+;; 2 approaches to word counting 
+(defun wc ()
+  (interactive)
+  (message "Word count: %s" (how-many "\\w+" (point-min) (point-max))))
+
+(defun count-words (&optional begin end)
+  "count words between BEGIN and END (region); if no region defined, count words in buffer"
+  (interactive "r")
+  (let ((b (if mark-active begin (point-min)))
+      (e (if mark-active end (point-max))))
+    (message "Word count: %s" (how-many "\\w+" b e))))
+
+
+;; ;; When turning on flyspell-mode, automatically check the entire buffer.
+;; ;; Why this isn't the default baffles me. (answer: for things like erc)
+;; (defadvice flyspell-mode (after advice-flyspell-check-buffer-on-start activate)
+;;   (flyspell-buffer))
+
+
+
+;; trying to set up org-babel. I have the feeling something is utterly wrong here.
+(add-to-list 'load-path "/home/milan/mysrc/emacsen/org-mode/contrib/babel/lisp/")
+(add-to-list 'load-path "/home/milan/mysrc/emacsen/org-mode/contrib/babel/lisp/langs")
+(require 'org-babel)
+(require 'org-babel-lob)
+(require 'org-babel-exp)
+(require 'org-babel-tangle)
+(require 'org-babel-R)
+(require 'org-babel-ref)
+(require 'org-babel-comint)
+(load-library "org-babel-R.el")
+
+;; ;;(add-to-list 'load-path "/usr/share/emacs/site-lisp")
+;; ;; Whoever broke this deserves eternal punishment in hell.
+
+
+
+
+;; toggle hidden files etc.
+(require 'dired-x)
+(setq dired-omit-files
+      (rx (or (seq bol (? ".") "#")         ;; emacs autosave files
+              (seq bol "." (not (any "."))) ;; dot-files
+              (seq "~" eol)                 ;; backup-files
+              (seq bol "CVS" eol)           ;; CVS dirs
+              )))
+(setq dired-omit-extensions
+      (append dired-latex-unclean-extensions
+              dired-bibtex-unclean-extensions
+              dired-texinfo-unclean-extensions))
+(add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1))) 
+
+
+;; (setq default-frame-alist
+;;       (append default-frame-alist
+;;        '((foreground-color . "White")
+;;  (background-color . "Black")
+;;  (cursor-color . "SkyBlue")
+;;  )))
+
+(load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
+
+
+;; pymacs
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+;;(eval-after-load "pymacs"
+;;  '(add-to-list 'pymacs-load-path YOUR-PYMACS-DIRECTORY"))
+
+
+;; pysmell
+(require 'pysmell)
+(add-hook 'python-mode-hook (lambda () (pysmell-mode 1)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Python mode customizations
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;There are TWO python modes
+; 1) Tim Peter's python-mode.el -- this is the standard/legacy way
+; 2) Dave Love's python.el -- this is when Dave Love got frustrated
+; that python-mode wasn't accepting his patches
+;
+;The following directory has a .nosearch file in it therefore it not in
+;the current load-path and the default python-mode will be used instead
+;The following loads Dave Love's python mode:
+(load-library "python")
+(autoload 'python-mode "python-mode" "Python Mode." t)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+(setq interpreter-mode-alist
+      (cons '("python" . python-mode)
+interpreter-mode-alist)
+      python-mode-hook
+      '(lambda () (progn
+(set-variable 'py-indent-offset 4)
+(set-variable 'py-smart-indentation nil)
+(set-variable 'indent-tabs-mode nil)
+;;(highlight-beyond-fill-column)
+                    (define-key python-mode-map "\C-m" 'newline-and-indent)
+;(pabbrev-mode)
+;(abbrev-mode)
+)))
+
+;; Autofill inside of comments
+
+(defun python-auto-fill-comments-only ()
+  (auto-fill-mode 1)
+  (set (make-local-variable 'fill-nobreak-predicate)
+       (lambda ()
+         (not (python-in-string/comment)))))
+(add-hook 'python-mode-hook
+          (lambda ()
+            (python-auto-fill-comments-only)))
+
+;; pymacs
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+;;(eval-after-load "pymacs"
+;; '(add-to-list 'pymacs-load-path YOUR-PYMACS-DIRECTORY"))
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-enable-autoimport t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Auto-completion
+;;; Integrates:
+;;; 1) Rope
+;;; 2) Yasnippet
+;;; all with AutoComplete.el
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun prefix-list-elements (list prefix)
+  (let (value)
+    (nreverse
+     (dolist (element list value)
+      (setq value (cons (format "%s%s" prefix element) value))))))
+(defvar ac-source-rope
+  '((candidates
+     . (lambda ()
+         (prefix-list-elements (rope-completions) ac-target))))
+  "Source for Rope")
+(defun ac-python-find ()
+  "Python `ac-find-function'."
+  (require 'thingatpt)
+  (let ((symbol (car-safe (bounds-of-thing-at-point 'symbol))))
+    (if (null symbol)
+        (if (string= "." (buffer-substring (- (point) 1) (point)))
+            (point)
+          nil)
+      symbol)))
+(defun ac-python-candidate ()
+  "Python `ac-candidates-function'"
+  (let (candidates)
+    (dolist (source ac-sources)
+      (if (symbolp source)
+          (setq source (symbol-value source)))
+      (let* ((ac-limit (or (cdr-safe (assq 'limit source)) ac-limit))
+             (requires (cdr-safe (assq 'requires source)))
+             cand)
+        (if (or (null requires)
+                (>= (length ac-target) requires))
+            (setq cand
+                  (delq nil
+                        (mapcar (lambda (candidate)
+                                  (propertize candidate 'source source))
+                                (funcall (cdr (assq 'candidates source)))))))
+        (if (and (> ac-limit 1)
+                 (> (length cand) ac-limit))
+            (setcdr (nthcdr (1- ac-limit) cand) nil))
+        (setq candidates (append candidates cand))))
+    (delete-dups candidates)))
+(add-hook 'python-mode-hook
+          (lambda ()
+                 (auto-complete-mode 1)
+                 (set (make-local-variable 'ac-sources)
+                      (append ac-sources '(ac-source-rope)))
+                 (set (make-local-variable 'ac-find-function) 'ac-python-find)
+                 (set (make-local-variable 'ac-candidate-function) 'ac-python-candidate)
+                 (set (make-local-variable 'ac-auto-start) nil)))
+
+;;Ryan's python specific tab completion
+  ; Try the following in order:
+  ; 1) Try a yasnippet expansion without autocomplete
+  ; 2) If at the beginning of the line, indent
+  ; 3) If at the end of the line, try to autocomplete
+  ; 4) If the char after point is not alpha-numerical, try autocomplete
+  ; 5) Try to do a regular python indent.
+  ; 6) If at the end of a word, try autocomplete.
+(define-key python-mode-map "\t" 'yas/expand)
+(add-hook 'python-mode-hook
+          (lambda ()
+            (set (make-local-variable 'yas/trigger-fallback) 'ryan-python-expand-after-yasnippet)))
+(defun ryan-indent ()
+  "Runs indent-for-tab-command but returns t if it actually did an indent; nil otherwise"
+  (let ((prev-point (point)))
+    (indent-for-tab-command)
+    (if (eql (point) prev-point)
+        nil
+      t)))
+(defun ryan-python-expand-after-yasnippet ()
+  (interactive)
+  ;;2) Try indent at beginning of the line
+  (let ((prev-point (point))
+        (beginning-of-line nil))
+    (save-excursion
+      (move-beginning-of-line nil)
+      (if (eql 0 (string-match "\\W*$" (buffer-substring (point) prev-point)))
+          (setq beginning-of-line t)))
+    (if beginning-of-line
+        (ryan-indent)))
+  ;;3) Try autocomplete if at the end of a line, or
+  ;;4) Try autocomplete if the next char is not alpha-numerical
+  (if (or (string-match "\n" (buffer-substring (point) (+ (point) 1)))
+          (not (string-match "[a-zA-Z0-9]" (buffer-substring (point) (+ (point) 1)))))
+      (ac-start)
+    ;;5) Try a regular indent
+    (if (not (ryan-indent))
+        ;;6) Try autocomplete at the end of a word
+        (if (string-match "\\W" (buffer-substring (point) (+ (point) 1)))
+            (ac-start)))))
+
+;; End Tab completion
+
+
+;;Workaround so that Autocomplete is by default is only invoked explicitly,
+;;but still automatically updates as you type while attempting to complete.
+(defadvice ac-start (before advice-turn-on-auto-start activate)
+  (set (make-local-variable 'ac-auto-start) t))
+(defadvice ac-cleanup (after advice-turn-off-auto-start activate)
+  (set (make-local-variable 'ac-auto-start) nil))
+
+;;Autofill comments
+;;TODO: make this work for docstrings too.
+;; but docstrings just use font-lock-string-face unfortunately
+(add-hook 'python-mode-hook
+          (lambda ()
+            (auto-fill-mode 1)
+            (set (make-local-variable 'fill-nobreak-predicate)
+                 (lambda ()
+                   (not (eq (get-text-property (point) 'face)
+                            'font-lock-comment-face))))))
+
+;; (brm-init)
+;; (require 'pycomplete)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; UNUSED?
+;; Put the following in your .emacs so that the
+;; abbrev table is set correctly in all modes.
+;; (Not just for java)
+;;
+;; (add-hook 'pre-abbrev-expand-hook 'abbrev-table-change)
+;; (defun abbrev-table-change (&optional args)
+;; (setq local-abbrev-table
+;; (if (eq major-mode 'jde-mode)
+;; (if (jde-parse-comment-or-quoted-p)
+;; text-mode-abbrev-table
+;; java-mode-abbrev-table)
+;; (if (eq major-mode 'python-mode)
+;; (if (inside-comment-p)
+;; text-mode-abbrev-table
+;; python-mode-abbrev-table
+;; ))))
+;; )
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;also, adjust yasnippet to not use tab
+(setq yas/trigger-key (kbd "C-c 6"))
+
+;; gentoo site packages 
+(require 'site-gentoo)
+
+
+
+;;; Email stuff -> http://www.emacswiki.org/cgi-bin/wiki/GnusMSMTP
+;;; with Emacs 23.1, you have to set this explicitly (in MS Windows)
+;;; otherwise it tries to send through OS associated mail client
+;;(setq message-send-mail-function 'message-send-mail-with-sendmail)
+;;; need to tell msmtp which account we're using
+;;(setq message-sendmail-extra-arguments '("-a" "milan"))
+;;; setup for gmail access, not storing passwords here..
+;;(setq mail-host-address "gmail.com")
+;;(setq user-full-name "Milan Santosi")
+;;(setq user-mail-address "milan.santosi@gmail.com")
+;;(setq starttls-use-gnutls t)
+
+
+(setq user-mail-address "milan.santosi@gmail.com")
+(setq user-full-name "Milan")`
+(setq smtpmail-smtp-server "smtp.gmail.com")
+(setq mail-user-agent 'message-user-agent)
+(setq message-send-mail-function 'message-smtpmail-send-it)
+
+
+;; not sure why, but emacswiki tell me to do this -- milan
+(require 'semantic-ia)
+
+;; auto-complete mode instead of company mode
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "/usr/share/emacs/site-lisp/ac-dict")
+(ac-config-default)
+
+;; ido
+(require 'ido)
+(ido-mode t)
+(setq ido-enable-flex-matching t) ;; enable fuzzy matching
+
+;; ;; sunrise-commander
+;; ;;(require 'sunrise-commander)
+
+;; chromium edit server
+;;(require 'edit-server)
+;;(edit-server-start)
+
+(require 'dired-details+)
+
+
+
+;; a few bindings
+
+(global-set-key (kbd "C-x d") 'dired-other-frame)
+(global-set-key (kbd "M-[") 'switch-to-next-frame)
+(global-set-key (kbd "C-d") 'dired)
+(global-set-key (kbd "M-m") 'newline-and-indent)
+(global-set-key (kbd "C-b") 'mode-line-other-buffer)
+
+
+
+;; from http://www.khngai.com/emacs/perl.php
+;; Use cperl-mode instead of the default perl-mode
+(add-to-list 'auto-mode-alist '("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
+(add-to-list 'interpreter-mode-alist '("perl" . cperl-mode))
+(add-to-list 'interpreter-mode-alist '("perl5" . cperl-mode))
+(add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
+
+;; Since I do not like the default indentations, I have the following:
+(add-hook 'cperl-mode-hook 'n-cperl-mode-hook t)
+(defun n-cperl-mode-hook ()
+  (setq cperl-indent-level 4)
+  (setq cperl-continued-statement-offset 0)
+  (setq cperl-extra-newline-before-brace t)
+;;  (set-face-background 'cperl-array-face "wheat")
+;;  (set-face-background 'cperl-hash-face "wheat")
+  )
+
+
+
+
+(add-to-list 'load-path "~/.emacs.d/elisp/sepia")
+     (setq sepia-perl5lib (list (expand-file-name "~/.emacs.d/elisp/sepia/lib")))
+     (defalias 'perl-mode 'sepia-mode)
+     (require 'sepia)
+
+
+(require 'w3m-load)
+
+;; ;;-------------
+
+;; ;; URL catcher for ERC, written by Oliver Scholz.  Places URLs into an
+;; ;; *ERC URLS* buffer as they're sent to IRC channels.
+(defvar my-erc-url-buffer "*URLS*")
+
+(defun my-scan-erc-urls ()
+  (require 'erc-button)
+  (save-excursion
+    (let ((urls nil)
+          (chann (or (erc-default-target)
+                     "SERVER")))
+      (goto-char (point-min))
+      (while (re-search-forward erc-button-url-regexp nil t)
+        (push (buffer-substring-no-properties
+               (match-beginning 0)
+               (match-end 0))
+              urls))
+      (when urls
+        (with-current-buffer (get-buffer-create my-erc-url-buffer)
+          (goto-char (point-max))
+          (unless (eq (char-before) ?\n)
+            (newline))
+          (insert (mapconcat (lambda (str)
+                               (format "- %s" str))
+                             urls "\n")))))))
+(add-hook 'erc-insert-modify-hook 'my-scan-erc-urls) 
+
+
+
+;; ;; (add-to-list 'gnus-secondary-select-methods '(nnimap "gmail"
+;; ;;                                   (nnimap-address "imap.gmail.com")
+;; ;;                                   (nnimap-server-port 993)
+;; ;;                                   (nnimap-stream ssl)))
+;; ;; (setq message-send-mail-function 'smtpmail-send-it
+;; ;;       smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+;; ;;       smtpmail-auth-credentials '(("smtp.gmail.com" 587 "milan.santosi@gmail.com" nil))
+;; ;;       smtpmail-default-smtp-server "smtp.gmail.com"
+;; ;;       smtpmail-smtp-server "smtp.gmail.com"
+;; ;;       smtpmail-smtp-service 587
+;; ;;       smtpmail-local-domain "theGordianReach.ath.cx")
+
+;; (defvar find-file-root-prefix (if (featurep 'xemacs) "/[sudo/root@localhost]" "/sudo:root@localhost:" )
+;;   "*The filename prefix used to open a file with `find-file-root'.")
+
+;; (defvar find-file-root-history nil
+;;   "History list for files found using `find-file-root'.")
+
+;; (defvar find-file-root-hook nil
+;;   "Normal hook for functions to run after finding a \"root\" file.")
+
+;; (defun find-file-root ()
+;;   "*Open a file as the root user.
+;;    Prepends `find-file-root-prefix' to the selected file name so that it
+;;    maybe accessed via the corresponding tramp method."
+
+;;   (interactive)
+;;   (require 'tramp)
+;;   (let* ( ;; We bind the variable `file-name-history' locally so we can
+;; 	 ;; use a separate history list for "root" files.
+;; 	 (file-name-history find-file-root-history)
+;; 	 (name (or buffer-file-name default-directory))
+;; 	 (tramp (and (tramp-tramp-file-p name)
+;; 		     (tramp-dissect-file-name name)))
+;; 	 path dir file)
+
+;;     ;; If called from a "root" file, we need to fix up the path.
+;;     (when tramp
+;;       (setq path (tramp-file-name-localname tramp)
+;; 	    dir (file-name-directory path)))
+
+;;     (when (setq file (read-file-name "Find file (UID = 0): " dir path))
+;;       (find-file (concat find-file-root-prefix file))
+;;       ;; If this all succeeded save our new history list.
+;;       (setq find-file-root-history file-name-history)
+;;       ;; allow some user customization
+;;       (run-hooks 'find-file-root-hook))))
+
+;; (global-set-key [(control x) (control r)] 'find-file-root)

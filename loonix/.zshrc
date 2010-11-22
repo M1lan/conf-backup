@@ -221,7 +221,10 @@ fi
 # MY STUFF
 #############################################################################
 # My path (hopefully)
-export PATH=/usr/local/games/ghost++:$HOME/.cabal/bin:$PATH
+export PATH=/usr/local/games/ghost++:$HOME/.cabal/bin:$HOME/mysrc/clojure-contrib/launchers/bash:$HOME/mysrc/leiningen:$PATH
+
+export CLOJURE_EXT=~/.clojure
+alias clj=clj-env-dir
 # My own functions
 # "apply ls /tmp /usr" runs "ls /tmp" then "ls /usr"
 function apply ()
@@ -247,6 +250,9 @@ function haskell-build ()
     runghc Setup.*hs install
   )
 }
+
+#Display nice tree for quickly browsing git repo
+alias gittree="git log --format='%Cgreen%d%Creset %Cred%h%Creset: %s%n%ai %Cred%aN%Creset <%aE>%n' --graph --decorate"
 
 #some aliases for building haskell source as user or not
 alias hinstu='runhaskell Setup configure --prefix=$HOME --user && runhaskell Setup build && runhaskell Setup install'
@@ -2912,7 +2918,7 @@ aoeu() {
 }
 asdf() {
     echo -n 'Switching to dvorak keyboard layout: '
-    [[ -z "$DISPLAY" ]] && $SUDO loadkeys dvorak &>/dev/null || setxkbmap dvorak &>/dev/null
+    [[ -z "$DISPLAY" ]] && $SUDO loadkeys dvorak &>/dev/null || setxkbmap dvorakclassic &>/dev/null
     echo 'Done'
 }
 # just press 'asdf' key to toggle from neon layout to us keyboard layout

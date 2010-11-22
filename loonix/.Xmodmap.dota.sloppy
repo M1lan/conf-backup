@@ -1,0 +1,3 @@
+keycode 0x0C =  KP_5               percent         5               5
+keycode 0x0D =  KP_4               numbersign      4               3
+keycode 0x0E =  KP_1               exclam          1               1
